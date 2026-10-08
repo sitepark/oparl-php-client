@@ -15,7 +15,7 @@
             "email": "becker@sitepark.com"
         }
     ],
-    "homepage": "https://github.com/sitepark/oparl-client",
+    "homepage": "https://github.com/sitepark/oparl-php-client",
     "require": {
         "php": "^8.2",
         "php-http/discovery": "^1.19",
