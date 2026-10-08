@@ -8,6 +8,7 @@ use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SP\OparlClient\Core\OparlList;
 use SP\OparlClient\Core\OparlObject;
 use SP\OparlClient\Internal\ObjectMapper;
 use SP\OparlClient\Internal\PropertyReader;
@@ -254,6 +255,64 @@ final class PropertyReaderTest extends TestCase
 
         $this->expectException(LogicException::class);
         $object->ref?->get();
+    }
+
+    public function testReadsReferenceToList(): void
+    {
+        $mapper = new ObjectMapper(
+            $this->logger,
+            listLoader: static fn(string $url, string $class): OparlList => new OparlList(
+                [new TestObject(name: $class . ' ' . $url)],
+            ),
+        );
+        $reader = new PropertyReader(['papers' => 'https://oparl.example.org/papers'], TestObject::class, $mapper);
+
+        $reference = $reader->listReference('papers', TestObject::class);
+
+        $this->assertSame(
+            TestObject::class . ' https://oparl.example.org/papers',
+            ($reference?->get()->getData()[0] ?? null)?->name,
+        );
+        $this->assertSame([], $reader->additionalProperties());
+    }
+
+    public function testKeepsInvalidReferenceToList(): void
+    {
+        $reader = new PropertyReader(['papers' => ['x']], TestObject::class, new ObjectMapper($this->logger));
+
+        $this->assertNull($reader->listReference('papers', TestObject::class));
+        $this->assertSame(['papers' => ['x']], $reader->additionalProperties());
+        $this->assertCount(1, $this->logger->messages('warning'));
+    }
+
+    public function testCreatesReferenceToListWithoutLoaderIfMappedWithoutClient(): void
+    {
+        $reader = new PropertyReader(['papers' => 'https://oparl.example.org/papers'], TestObject::class, new ObjectMapper());
+        $reference = $reader->listReference('papers', TestObject::class);
+
+        $this->expectException(LogicException::class);
+        $reference?->get();
+    }
+
+    public function testReadsObjectWithOwnReadFunction(): void
+    {
+        $reader = new PropertyReader(
+            ['child' => ['name' => 'Kind'], 'other' => 'https://oparl.example.org/x'],
+            TestObject::class,
+            new ObjectMapper($this->logger),
+        );
+        $read = static fn(PropertyReader $r): TestObject => new TestObject(name: 'eigen ' . $r->string('name'));
+
+        $this->assertSame('eigen Kind', $reader->objectWith('child', TestObject::class, $read)?->name);
+        $this->assertNull($reader->objectWith('other', TestObject::class, $read));
+        $this->assertSame(['other' => 'https://oparl.example.org/x'], $reader->additionalProperties());
+    }
+
+    public function testProvidesLoggerOfMapper(): void
+    {
+        $reader = new PropertyReader([], TestObject::class, new ObjectMapper($this->logger));
+
+        $this->assertSame($this->logger, $reader->logger());
     }
 
     public function testShortensAndSanitizesLoggedValue(): void

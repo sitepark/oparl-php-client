@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace SP\OparlClient\Internal;
 
+use Closure;
 use DateTimeImmutable;
+use Psr\Log\LoggerInterface;
+use SP\OparlClient\Core\OparlList;
 use SP\OparlClient\Core\OparlObject;
 use SP\OparlClient\Core\OparlReference;
 
@@ -161,6 +164,43 @@ final class PropertyReader
     }
 
     /**
+     * Reads an embedded object with an own read function, for classes that need more than the
+     * properties to be created, e.g. the links of a list page, which need the element class.
+     *
+     * @template C of OparlObject
+     * @param class-string<OparlObject> $class the class of the object, for log messages
+     * @param Closure(PropertyReader): C $read creates the object
+     * @return C|null
+     */
+    public function objectWith(string $name, string $class, Closure $read): ?OparlObject
+    {
+        return $this->single(
+            $name,
+            fn(mixed $value): ?OparlObject => self::isObject($value) ? $this->mapper->mapWith($value, $class, $read) : null,
+            'an embedded object',
+        );
+    }
+
+    /**
+     * Reads a reference to an external list, e.g. all meetings of a body.
+     *
+     * @template E of OparlObject
+     * @param class-string<E> $elementClass the class of the elements of the list
+     * @return OparlReference<OparlList<E>>|null
+     */
+    public function listReference(string $name, string $elementClass): ?OparlReference
+    {
+        return $this->single(
+            $name,
+            function (mixed $value) use ($elementClass): ?OparlReference {
+                $url = self::toUrl($value);
+                return $url !== null ? new OparlReference($url, $this->mapper->listLoader($elementClass)) : null;
+            },
+            'a URL',
+        );
+    }
+
+    /**
      * @template C of OparlObject
      * @param class-string<C> $class
      * @return list<C>|null
@@ -172,6 +212,11 @@ final class PropertyReader
             fn(mixed $value): ?OparlObject => $this->toObject($value, $class),
             'a list of embedded objects',
         );
+    }
+
+    public function logger(): LoggerInterface
+    {
+        return $this->mapper->logger();
     }
 
     /**
@@ -295,10 +340,17 @@ final class PropertyReader
      */
     private function toObject(mixed $value, string $class): ?OparlObject
     {
-        if (!is_array($value) || ($value !== [] && array_is_list($value))) {
-            return null;
-        }
-        return $this->mapper->map($value, $class);
+        return self::isObject($value) ? $this->mapper->map($value, $class) : null;
+    }
+
+    /**
+     * Whether the value is a decoded JSON object. An empty array may be an empty JSON object.
+     *
+     * @phpstan-assert-if-true array<mixed> $value
+     */
+    private static function isObject(mixed $value): bool
+    {
+        return is_array($value) && ($value === [] || !array_is_list($value));
     }
 
     private static function toString(mixed $value): ?string
