@@ -76,18 +76,22 @@ final class OparlTime
 
     /**
      * Formats a date-time as required by the specification, e.g. `2024-01-21T10:00:00+01:00`.
+     *
+     * @return ($dateTime is null ? null : string)
      */
-    public static function formatDateTime(DateTimeInterface $dateTime): string
+    public static function formatDateTime(?DateTimeInterface $dateTime): ?string
     {
-        return $dateTime->format(self::DATE_TIME_FORMAT);
+        return $dateTime?->format(self::DATE_TIME_FORMAT);
     }
 
     /**
      * Formats a date as required by the specification, e.g. `2024-01-21`.
+     *
+     * @return ($date is null ? null : string)
      */
-    public static function formatDate(DateTimeInterface $date): string
+    public static function formatDate(?DateTimeInterface $date): ?string
     {
-        return $date->format(self::DATE_FORMAT);
+        return $date?->format(self::DATE_FORMAT);
     }
 
     /**
