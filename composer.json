@@ -77,7 +77,7 @@
         "test": [
             "@test:phpunit"
         ],
-        "test:infection": "vendor/bin/infection --threads=8 --no-progress --only-covered -s || exit 0",
+        "test:infection": "vendor/bin/infection --threads=8 --no-progress -s || exit 0",
         "test:phpunit": [
             "@putenv XDEBUG_MODE=coverage",
             "./tools/phpunit.phar -c phpunit.xml --coverage-text"
