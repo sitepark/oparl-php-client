@@ -17,7 +17,7 @@ use DateTimeInterface;
  * The specification requires a full date-time including the time zone. A `DateTimeInterface` is
  * sent with the offset of its time zone and without fraction of seconds.
  */
-final readonly class Created extends QueryParam
+final class Created extends QueryParam
 {
     public const PARAM_NAME_SINCE = 'created_since';
 

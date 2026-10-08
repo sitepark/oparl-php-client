@@ -23,14 +23,14 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @template-covariant T of OparlObject the type of the elements, e.g. `OparlMeeting`
  */
-final readonly class OparlList extends OparlObject
+final class OparlList extends OparlObject
 {
-    private OparlPagination $pagination;
+    private readonly OparlPagination $pagination;
 
     /**
      * @var OparlListLinks<T>
      */
-    private OparlListLinks $links;
+    private readonly OparlListLinks $links;
 
     /**
      * @param list<T> $data
@@ -41,11 +41,11 @@ final readonly class OparlList extends OparlObject
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        private array $data = [],
+        private readonly array $data = [],
         ?OparlPagination $pagination = null,
         ?OparlListLinks $links = null,
-        private array $sourceUris = [],
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly array $sourceUris = [],
+        private readonly LoggerInterface $logger = new NullLogger(),
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

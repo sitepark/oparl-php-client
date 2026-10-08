@@ -10,7 +10,7 @@ use SP\OparlClient\Internal\PropertyReader;
  * Error object a server may return together with an error status code, see the chapter
  * "Ausnahmebehandlung" of the OParl specification.
  */
-final readonly class OparlError extends OparlObject
+final class OparlError extends OparlObject
 {
     /**
      * Type URL of the error object in OParl 1.1.
@@ -26,9 +26,9 @@ final readonly class OparlError extends OparlObject
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        private ?string $type = null,
-        private ?string $message = null,
-        private ?string $debug = null,
+        private readonly ?string $type = null,
+        private readonly ?string $message = null,
+        private readonly ?string $debug = null,
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

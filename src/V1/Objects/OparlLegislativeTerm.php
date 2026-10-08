@@ -14,7 +14,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-legislativeterm
  */
-final readonly class OparlLegislativeTerm extends OparlObjectV1
+final class OparlLegislativeTerm extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlBody>|null $body
@@ -24,10 +24,10 @@ final readonly class OparlLegislativeTerm extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $body = null,
-        private ?string $name = null,
-        private ?DateTimeImmutable $startDate = null,
-        private ?DateTimeImmutable $endDate = null,
+        private readonly ?OparlReference $body = null,
+        private readonly ?string $name = null,
+        private readonly ?DateTimeImmutable $startDate = null,
+        private readonly ?DateTimeImmutable $endDate = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

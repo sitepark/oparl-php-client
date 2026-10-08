@@ -14,7 +14,7 @@ use Stringable;
  * {@see \SP\OparlClient\Core\OparlReference::withQueryParams()}. Use the subclasses for the
  * parameters defined by the specification, or this class for any other parameter.
  */
-readonly class QueryParam implements Stringable
+class QueryParam implements Stringable
 {
     /**
      * Characters besides letters and digits that are not encoded.
@@ -26,8 +26,8 @@ readonly class QueryParam implements Stringable
      * @param string $value the value, unencoded; it is URL-encoded when the parameter is appended
      */
     public function __construct(
-        private string $name,
-        private string $value,
+        private readonly string $name,
+        private readonly string $value,
     ) {}
 
     public function getName(): string

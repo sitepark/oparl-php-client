@@ -16,7 +16,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-organization
  */
-final readonly class OparlOrganization extends OparlObjectV1
+final class OparlOrganization extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlBody>|null $body
@@ -32,21 +32,21 @@ final readonly class OparlOrganization extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $body = null,
-        private ?string $name = null,
-        private ?array $membership = null,
-        private ?OparlReference $meeting = null,
-        private ?OparlReference $consultation = null,
-        private ?string $shortName = null,
-        private ?array $post = null,
-        private ?OparlReference $subOrganizationOf = null,
-        private ?string $organizationType = null,
-        private ?string $classification = null,
-        private ?DateTimeImmutable $startDate = null,
-        private ?DateTimeImmutable $endDate = null,
-        private ?string $website = null,
-        private ?OparlLocation $location = null,
-        private ?OparlReference $externalBody = null,
+        private readonly ?OparlReference $body = null,
+        private readonly ?string $name = null,
+        private readonly ?array $membership = null,
+        private readonly ?OparlReference $meeting = null,
+        private readonly ?OparlReference $consultation = null,
+        private readonly ?string $shortName = null,
+        private readonly ?array $post = null,
+        private readonly ?OparlReference $subOrganizationOf = null,
+        private readonly ?string $organizationType = null,
+        private readonly ?string $classification = null,
+        private readonly ?DateTimeImmutable $startDate = null,
+        private readonly ?DateTimeImmutable $endDate = null,
+        private readonly ?string $website = null,
+        private readonly ?OparlLocation $location = null,
+        private readonly ?OparlReference $externalBody = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

@@ -18,21 +18,21 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#eigenschaften-mit-verwendung-in-mehreren-objekttypen
  */
-readonly class OparlObjectV1 extends OparlObject
+class OparlObjectV1 extends OparlObject
 {
     /**
      * @param list<string>|null $keyword
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        private ?string $id = null,
-        private ?string $type = null,
-        private ?DateTimeImmutable $created = null,
-        private ?DateTimeImmutable $modified = null,
-        private bool $deleted = false,
-        private ?array $keyword = null,
-        private ?string $license = null,
-        private ?string $web = null,
+        private readonly ?string $id = null,
+        private readonly ?string $type = null,
+        private readonly ?DateTimeImmutable $created = null,
+        private readonly ?DateTimeImmutable $modified = null,
+        private readonly bool $deleted = false,
+        private readonly ?array $keyword = null,
+        private readonly ?string $license = null,
+        private readonly ?string $web = null,
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

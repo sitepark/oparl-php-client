@@ -17,7 +17,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-membership
  */
-final readonly class OparlMembership extends OparlObjectV1
+final class OparlMembership extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlPerson>|null $person
@@ -29,13 +29,13 @@ final readonly class OparlMembership extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $person = null,
-        private ?OparlReference $organization = null,
-        private ?string $role = null,
-        private ?bool $votingRight = null,
-        private ?DateTimeImmutable $startDate = null,
-        private ?DateTimeImmutable $endDate = null,
-        private ?OparlReference $onBehalfOf = null,
+        private readonly ?OparlReference $person = null,
+        private readonly ?OparlReference $organization = null,
+        private readonly ?string $role = null,
+        private readonly ?bool $votingRight = null,
+        private readonly ?DateTimeImmutable $startDate = null,
+        private readonly ?DateTimeImmutable $endDate = null,
+        private readonly ?OparlReference $onBehalfOf = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

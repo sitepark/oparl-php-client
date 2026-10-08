@@ -35,7 +35,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-file
  */
-final readonly class OparlFile extends OparlObjectV1
+final class OparlFile extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlFile>|null $masterFile
@@ -49,23 +49,23 @@ final readonly class OparlFile extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?string $name = null,
-        private ?string $fileName = null,
-        private ?string $mimeType = null,
-        private ?DateTimeImmutable $date = null,
-        private ?int $size = null,
-        private ?string $sha1Checksum = null,
-        private ?string $sha512Checksum = null,
-        private ?string $text = null,
-        private ?string $accessUrl = null,
-        private ?string $downloadUrl = null,
-        private ?string $externalServiceUrl = null,
-        private ?OparlReference $masterFile = null,
-        private ?array $derivativeFile = null,
-        private ?string $fileLicense = null,
-        private ?array $meeting = null,
-        private ?array $agendaItem = null,
-        private ?array $paper = null,
+        private readonly ?string $name = null,
+        private readonly ?string $fileName = null,
+        private readonly ?string $mimeType = null,
+        private readonly ?DateTimeImmutable $date = null,
+        private readonly ?int $size = null,
+        private readonly ?string $sha1Checksum = null,
+        private readonly ?string $sha512Checksum = null,
+        private readonly ?string $text = null,
+        private readonly ?string $accessUrl = null,
+        private readonly ?string $downloadUrl = null,
+        private readonly ?string $externalServiceUrl = null,
+        private readonly ?OparlReference $masterFile = null,
+        private readonly ?array $derivativeFile = null,
+        private readonly ?string $fileLicense = null,
+        private readonly ?array $meeting = null,
+        private readonly ?array $agendaItem = null,
+        private readonly ?array $paper = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

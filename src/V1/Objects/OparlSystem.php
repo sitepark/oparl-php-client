@@ -19,7 +19,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-system
  */
-final readonly class OparlSystem extends OparlObjectV1
+final class OparlSystem extends OparlObjectV1
 {
     /**
      * @param list<OparlReference<OparlSystem>>|null $otherOparlVersions
@@ -30,15 +30,15 @@ final readonly class OparlSystem extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?string $oparlVersion = null,
-        private ?array $otherOparlVersions = null,
-        private ?OparlReference $body = null,
-        private ?string $name = null,
-        private ?string $contactEmail = null,
-        private ?string $contactName = null,
-        private ?string $website = null,
-        private ?string $vendor = null,
-        private ?string $product = null,
+        private readonly ?string $oparlVersion = null,
+        private readonly ?array $otherOparlVersions = null,
+        private readonly ?OparlReference $body = null,
+        private readonly ?string $name = null,
+        private readonly ?string $contactEmail = null,
+        private readonly ?string $contactName = null,
+        private readonly ?string $website = null,
+        private readonly ?string $vendor = null,
+        private readonly ?string $product = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

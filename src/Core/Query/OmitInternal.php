@@ -9,7 +9,7 @@ namespace SP\OparlClient\Core\Query;
  * meetings, via the URL parameter `omit_internal`. Reduces the size of list pages considerably,
  * e.g. when updating a local copy.
  */
-final readonly class OmitInternal extends QueryParam
+final class OmitInternal extends QueryParam
 {
     public const PARAM_NAME = 'omit_internal';
 

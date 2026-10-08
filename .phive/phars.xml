@@ -2,6 +2,6 @@
 <phive xmlns="https://phar.io/phive">
   <phar name="phpstan" version="^2.1" location="./tools/phpstan" copy="false" installed="2.2.14"/>
   <phar name="composer-normalize" version="^2.48" location="./tools/composer-normalize" copy="false" installed="2.53.0"/>
-  <phar name="phpunit" version="^11.5" location="./tools/phpunit.phar" copy="true" installed="11.5.57"/>
+  <phar name="phpunit" version="^10.5" location="./tools/phpunit.phar" copy="true" installed="10.5.63"/>
   <phar name="php-cs-fixer" version="^3.88" location="./tools/php-cs-fixer" copy="false" installed="3.95.25"/>
 </phive>

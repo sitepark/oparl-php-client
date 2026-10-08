@@ -1,4 +1,5 @@
 ![phpstan](https://img.shields.io/badge/PHPStan-level%209-brightgreen)
+![php](https://img.shields.io/badge/PHP-8.1-blue)
 ![php](https://img.shields.io/badge/PHP-8.2-blue)
 ![php](https://img.shields.io/badge/PHP-8.3-blue)
 ![php](https://img.shields.io/badge/PHP-8.4-blue)
@@ -21,7 +22,7 @@ update mechanism of the specification.
 
 ## Requirements
 
-- PHP 8.2 or newer
+- PHP 8.1 or newer
 - A PSR-18 http client and PSR-17 factories, e.g. [Symfony HttpClient](https://symfony.com/doc/current/http_client.html)
   with [nyholm/psr7](https://github.com/Nyholm/psr7), or [Guzzle](https://docs.guzzlephp.org/)
   (see [Redirects](#redirects))

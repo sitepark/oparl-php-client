@@ -25,7 +25,7 @@ use SP\OparlClient\Core\Query\QueryParam;
  * @template-covariant T the type of the referenced object, e.g. `OparlMeeting` or
  *     `OparlList<OparlPaper>`
  */
-final readonly class OparlReference implements JsonSerializable
+final class OparlReference implements JsonSerializable
 {
     /**
      * Creates a reference. Usually references are created by the client while reading an object.
@@ -35,8 +35,8 @@ final readonly class OparlReference implements JsonSerializable
      *     {@see self::get()} fails
      */
     public function __construct(
-        private string $uri,
-        private ?Closure $loader = null,
+        private readonly string $uri,
+        private readonly ?Closure $loader = null,
     ) {}
 
     /**

@@ -18,7 +18,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-consultation
  */
-final readonly class OparlConsultation extends OparlObjectV1
+final class OparlConsultation extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlPaper>|null $paper
@@ -31,12 +31,12 @@ final readonly class OparlConsultation extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $paper = null,
-        private ?OparlReference $agendaItem = null,
-        private ?OparlReference $meeting = null,
-        private ?array $organization = null,
-        private ?bool $authoritative = null,
-        private ?string $role = null,
+        private readonly ?OparlReference $paper = null,
+        private readonly ?OparlReference $agendaItem = null,
+        private readonly ?OparlReference $meeting = null,
+        private readonly ?array $organization = null,
+        private readonly ?bool $authoritative = null,
+        private readonly ?string $role = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

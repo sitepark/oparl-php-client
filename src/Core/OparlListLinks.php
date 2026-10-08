@@ -14,7 +14,7 @@ use SP\OparlClient\Internal\PropertyReader;
  * @template-covariant T of OparlObject = never the type of the elements of the list; `never` for links
  *     without any page
  */
-final readonly class OparlListLinks extends OparlObject
+final class OparlListLinks extends OparlObject
 {
     /**
      * @param OparlReference<OparlList<T>>|null $first
@@ -25,12 +25,12 @@ final readonly class OparlListLinks extends OparlObject
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        private ?OparlReference $first = null,
-        private ?OparlReference $prev = null,
-        private ?OparlReference $self = null,
-        private ?OparlReference $next = null,
-        private ?OparlReference $last = null,
-        private ?string $web = null,
+        private readonly ?OparlReference $first = null,
+        private readonly ?OparlReference $prev = null,
+        private readonly ?OparlReference $self = null,
+        private readonly ?OparlReference $next = null,
+        private readonly ?OparlReference $last = null,
+        private readonly ?string $web = null,
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

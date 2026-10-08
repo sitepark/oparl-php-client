@@ -12,7 +12,7 @@ use InvalidArgumentException;
  * According to the OParl specification, a server is not obliged to respect it, so clients must
  * not rely on the page size.
  */
-final readonly class Limit extends QueryParam
+final class Limit extends QueryParam
 {
     public const PARAM_NAME = 'limit';
 

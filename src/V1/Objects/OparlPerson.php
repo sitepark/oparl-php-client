@@ -17,7 +17,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-person
  */
-final readonly class OparlPerson extends OparlObjectV1
+final class OparlPerson extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlBody>|null $body
@@ -33,22 +33,22 @@ final readonly class OparlPerson extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $body = null,
-        private ?string $name = null,
-        private ?string $familyName = null,
-        private ?string $givenName = null,
-        private ?string $formOfAddress = null,
-        private ?string $affix = null,
-        private ?array $title = null,
-        private ?string $gender = null,
-        private ?array $phone = null,
-        private ?array $email = null,
-        private ?OparlReference $location = null,
-        private ?OparlLocation $locationObject = null,
-        private ?array $status = null,
-        private ?array $membership = null,
-        private ?string $life = null,
-        private ?string $lifeSource = null,
+        private readonly ?OparlReference $body = null,
+        private readonly ?string $name = null,
+        private readonly ?string $familyName = null,
+        private readonly ?string $givenName = null,
+        private readonly ?string $formOfAddress = null,
+        private readonly ?string $affix = null,
+        private readonly ?array $title = null,
+        private readonly ?string $gender = null,
+        private readonly ?array $phone = null,
+        private readonly ?array $email = null,
+        private readonly ?OparlReference $location = null,
+        private readonly ?OparlLocation $locationObject = null,
+        private readonly ?array $status = null,
+        private readonly ?array $membership = null,
+        private readonly ?string $life = null,
+        private readonly ?string $lifeSource = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

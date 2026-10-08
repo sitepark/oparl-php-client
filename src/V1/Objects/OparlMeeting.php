@@ -21,7 +21,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-meeting
  */
-final readonly class OparlMeeting extends OparlObjectV1
+final class OparlMeeting extends OparlObjectV1
 {
     /**
      * @param list<OparlReference<OparlOrganization>>|null $organization
@@ -34,19 +34,19 @@ final readonly class OparlMeeting extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?string $name = null,
-        private ?string $meetingState = null,
-        private ?bool $cancelled = null,
-        private ?DateTimeImmutable $start = null,
-        private ?DateTimeImmutable $end = null,
-        private ?OparlLocation $location = null,
-        private ?array $organization = null,
-        private ?array $participant = null,
-        private ?OparlFile $invitation = null,
-        private ?OparlFile $resultsProtocol = null,
-        private ?OparlFile $verbatimProtocol = null,
-        private ?array $auxiliaryFile = null,
-        private ?array $agendaItem = null,
+        private readonly ?string $name = null,
+        private readonly ?string $meetingState = null,
+        private readonly ?bool $cancelled = null,
+        private readonly ?DateTimeImmutable $start = null,
+        private readonly ?DateTimeImmutable $end = null,
+        private readonly ?OparlLocation $location = null,
+        private readonly ?array $organization = null,
+        private readonly ?array $participant = null,
+        private readonly ?OparlFile $invitation = null,
+        private readonly ?OparlFile $resultsProtocol = null,
+        private readonly ?OparlFile $verbatimProtocol = null,
+        private readonly ?array $auxiliaryFile = null,
+        private readonly ?array $agendaItem = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

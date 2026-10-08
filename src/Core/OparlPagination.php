@@ -10,16 +10,16 @@ use SP\OparlClient\Internal\PropertyReader;
  * Information about the number of elements and pages of a list. All values are optional; values
  * not sent by the server are `null`.
  */
-final readonly class OparlPagination extends OparlObject
+final class OparlPagination extends OparlObject
 {
     /**
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        private ?int $totalElements = null,
-        private ?int $elementsPerPage = null,
-        private ?int $currentPage = null,
-        private ?int $totalPages = null,
+        private readonly ?int $totalElements = null,
+        private readonly ?int $elementsPerPage = null,
+        private readonly ?int $currentPage = null,
+        private readonly ?int $totalPages = null,
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

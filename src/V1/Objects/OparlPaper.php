@@ -22,7 +22,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-paper
  */
-final readonly class OparlPaper extends OparlObjectV1
+final class OparlPaper extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlBody>|null $body
@@ -41,21 +41,21 @@ final readonly class OparlPaper extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $body = null,
-        private ?string $name = null,
-        private ?string $reference = null,
-        private ?DateTimeImmutable $date = null,
-        private ?string $paperType = null,
-        private ?array $relatedPaper = null,
-        private ?array $superordinatedPaper = null,
-        private ?array $subordinatedPaper = null,
-        private ?OparlFile $mainFile = null,
-        private ?array $auxiliaryFile = null,
-        private ?array $location = null,
-        private ?array $originatorPerson = null,
-        private ?array $underDirectionOf = null,
-        private ?array $originatorOrganization = null,
-        private ?array $consultation = null,
+        private readonly ?OparlReference $body = null,
+        private readonly ?string $name = null,
+        private readonly ?string $reference = null,
+        private readonly ?DateTimeImmutable $date = null,
+        private readonly ?string $paperType = null,
+        private readonly ?array $relatedPaper = null,
+        private readonly ?array $superordinatedPaper = null,
+        private readonly ?array $subordinatedPaper = null,
+        private readonly ?OparlFile $mainFile = null,
+        private readonly ?array $auxiliaryFile = null,
+        private readonly ?array $location = null,
+        private readonly ?array $originatorPerson = null,
+        private readonly ?array $underDirectionOf = null,
+        private readonly ?array $originatorOrganization = null,
+        private readonly ?array $consultation = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

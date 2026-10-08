@@ -13,7 +13,7 @@ use SP\OparlClient\Internal\PropertyReader;
 /**
  * An object with one property of every kind the reader supports.
  */
-final readonly class TestObject extends OparlObject
+final class TestObject extends OparlObject
 {
     /**
      * @param list<string>|null $tags
@@ -25,19 +25,19 @@ final readonly class TestObject extends OparlObject
      * @param array<string, mixed> $additionalProperties
      */
     public function __construct(
-        public ?string $name = null,
-        public ?int $count = null,
-        public ?bool $active = null,
-        public ?string $url = null,
-        public ?array $tags = null,
-        public ?array $links = null,
-        public ?DateTimeImmutable $start = null,
-        public ?DateTimeImmutable $day = null,
-        public ?array $geo = null,
-        public ?OparlReference $ref = null,
-        public ?array $refs = null,
-        public ?TestObject $child = null,
-        public ?array $children = null,
+        public readonly ?string $name = null,
+        public readonly ?int $count = null,
+        public readonly ?bool $active = null,
+        public readonly ?string $url = null,
+        public readonly ?array $tags = null,
+        public readonly ?array $links = null,
+        public readonly ?DateTimeImmutable $start = null,
+        public readonly ?DateTimeImmutable $day = null,
+        public readonly ?array $geo = null,
+        public readonly ?OparlReference $ref = null,
+        public readonly ?array $refs = null,
+        public readonly ?TestObject $child = null,
+        public readonly ?array $children = null,
         array $additionalProperties = [],
     ) {
         parent::__construct($additionalProperties);

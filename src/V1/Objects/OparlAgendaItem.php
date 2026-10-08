@@ -24,7 +24,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-agendaitem
  */
-final readonly class OparlAgendaItem extends OparlObjectV1
+final class OparlAgendaItem extends OparlObjectV1
 {
     /**
      * @param OparlReference<OparlMeeting>|null $meeting
@@ -36,18 +36,18 @@ final readonly class OparlAgendaItem extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?OparlReference $meeting = null,
-        private ?string $number = null,
-        private ?int $order = null,
-        private ?string $name = null,
-        private ?bool $public = null,
-        private ?OparlReference $consultation = null,
-        private ?string $result = null,
-        private ?string $resolutionText = null,
-        private ?OparlFile $resolutionFile = null,
-        private ?array $auxiliaryFile = null,
-        private ?DateTimeImmutable $start = null,
-        private ?DateTimeImmutable $end = null,
+        private readonly ?OparlReference $meeting = null,
+        private readonly ?string $number = null,
+        private readonly ?int $order = null,
+        private readonly ?string $name = null,
+        private readonly ?bool $public = null,
+        private readonly ?OparlReference $consultation = null,
+        private readonly ?string $result = null,
+        private readonly ?string $resolutionText = null,
+        private readonly ?OparlFile $resolutionFile = null,
+        private readonly ?array $auxiliaryFile = null,
+        private readonly ?DateTimeImmutable $start = null,
+        private readonly ?DateTimeImmutable $end = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

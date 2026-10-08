@@ -16,7 +16,7 @@ use SP\OparlClient\Internal\PropertyReader;
  *
  * @see https://dev.oparl.org/spezifikation/1.1#entity-location
  */
-final readonly class OparlLocation extends OparlObjectV1
+final class OparlLocation extends OparlObjectV1
 {
     /**
      * @param array<mixed>|null $geojson
@@ -31,18 +31,18 @@ final readonly class OparlLocation extends OparlObjectV1
     public function __construct(
         ?string $id = null,
         ?string $type = null,
-        private ?string $description = null,
-        private ?array $geojson = null,
-        private ?string $streetAddress = null,
-        private ?string $room = null,
-        private ?string $postalCode = null,
-        private ?string $subLocality = null,
-        private ?string $locality = null,
-        private ?array $bodies = null,
-        private ?array $organizations = null,
-        private ?array $persons = null,
-        private ?array $meetings = null,
-        private ?array $papers = null,
+        private readonly ?string $description = null,
+        private readonly ?array $geojson = null,
+        private readonly ?string $streetAddress = null,
+        private readonly ?string $room = null,
+        private readonly ?string $postalCode = null,
+        private readonly ?string $subLocality = null,
+        private readonly ?string $locality = null,
+        private readonly ?array $bodies = null,
+        private readonly ?array $organizations = null,
+        private readonly ?array $persons = null,
+        private readonly ?array $meetings = null,
+        private readonly ?array $papers = null,
         ?DateTimeImmutable $created = null,
         ?DateTimeImmutable $modified = null,
         bool $deleted = false,

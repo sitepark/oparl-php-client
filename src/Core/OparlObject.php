@@ -11,14 +11,14 @@ use SP\OparlClient\Internal\PropertyReader;
  * Base class of all objects read from an OParl server. Keeps the properties of the JSON object
  * that are not mapped, see {@see self::getAdditionalProperties()}.
  */
-abstract readonly class OparlObject implements JsonSerializable
+abstract class OparlObject implements JsonSerializable
 {
     /**
      * @param array<string, mixed> $additionalProperties properties of the JSON object that are not
      *     mapped, as decoded by `json_decode(..., true)`
      */
     public function __construct(
-        private array $additionalProperties = [],
+        private readonly array $additionalProperties = [],
     ) {}
 
     /**
