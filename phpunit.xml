@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
+		colors="true"
+		bootstrap="vendor/autoload.php"
+		displayDetailsOnTestsThatTriggerDeprecations="true"
+		displayDetailsOnTestsThatTriggerNotices="true"
+		displayDetailsOnTestsThatTriggerWarnings="true"
+		displayDetailsOnPhpunitDeprecations="true"
+		failOnDeprecation="true"
+		failOnNotice="true"
+		failOnWarning="true"
+		failOnRisky="true"
+		executionOrder="random"
+		cacheDirectory="var/cache/.phpunit.cache">
+
+	<coverage>
+		<report>
+			<clover outputFile="var/log/clover/clover.xml"/>
+			<html outputDirectory="var/log/clover"/>
+		</report>
+	</coverage>
+
+	<testsuites>
+		<testsuite name="oparl-client">
+			<directory>test/</directory>
+		</testsuite>
+	</testsuites>
+
+	<php>
+		<ini name="memory_limit" value="512M"/>
+		<ini name="error_reporting" value="-1"/>
+	</php>
+
+	<logging>
+		<junit outputFile="var/log/surefire-reports/surefire-report.xml"/>
+	</logging>
+
+	<source>
+		<include>
+			<directory>src/</directory>
+		</include>
+	</source>
+</phpunit>

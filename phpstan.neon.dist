@@ -1,0 +1,9 @@
+parameters:
+    level: 9
+    tmpDir: var/cache/phpstan
+    paths:
+        - src
+        - test
+    bootstrapFiles:
+        # PHPUnit is installed as phar, its classes are only known once it is loaded
+        - tools/phpunit.phar

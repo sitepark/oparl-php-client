@@ -1,0 +1,86 @@
+{
+    "name": "sitepark/oparl-client",
+    "description": "Client for OParl 1.0 and 1.1, the standard interface of German council information systems",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "oparl",
+        "ratsinformationssystem",
+        "open data",
+        "psr-18"
+    ],
+    "authors": [
+        {
+            "name": "Felix Becker",
+            "email": "becker@sitepark.com"
+        }
+    ],
+    "homepage": "https://github.com/sitepark/oparl-client",
+    "require": {
+        "php": "^8.2",
+        "php-http/discovery": "^1.19",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.1 || ^2.0",
+        "psr/log": "^1.1 || ^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+        "infection/infection": "^0.29 || ^0.35",
+        "nyholm/psr7": "^1.8",
+        "overtrue/phplint": "^9.6",
+        "phpcompatibility/php-compatibility": "^9.3.5",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.13"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "SP\\OparlClient\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SP\\OparlClient\\Test\\": "test"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "infection/extension-installer": true,
+            "php-http/discovery": false
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "phive --no-progress install --trust-gpg-keys C00543248C87FB13,4AA394086372C20A,CF1A108D0E7AE720,51C67305FFC2E5C0,E82B2FB314E9906E",
+        "analyse": [
+            "@analyse:phplint",
+            "@analyse:phpstan",
+            "@analyse:phpcsfixer",
+            "@analyse:compatibilitycheck"
+        ],
+        "analyse:compatibilitycheck": "./vendor/bin/phpcs --standard=./phpcs.compatibilitycheck.xml",
+        "analyse:phpcsfixer": "./tools/php-cs-fixer check --diff --show-progress=dots",
+        "analyse:phplint": "./vendor/bin/phplint",
+        "analyse:phpstan": "./tools/phpstan analyse",
+        "fix": [
+            "@fix:phpcsfixer"
+        ],
+        "fix:phpcsfixer": "./tools/php-cs-fixer fix",
+        "test": [
+            "@test:phpunit"
+        ],
+        "test:infection": "vendor/bin/infection --threads=8 --no-progress --only-covered -s || exit 0",
+        "test:phpunit": [
+            "@putenv XDEBUG_MODE=coverage",
+            "./tools/phpunit.phar -c phpunit.xml --coverage-text"
+        ]
+    }
+}
