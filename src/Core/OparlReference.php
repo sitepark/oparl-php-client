@@ -110,4 +110,25 @@ final class OparlReference implements JsonSerializable
     {
         return $this->uri;
     }
+
+    /**
+     * Serializes the URL only: the loader can not be serialized. After `unserialize()`, the
+     * reference has no loader and {@see self::get()} fails, unless the object is read again, e.g.
+     * with {@see \SP\OparlClient\OparlClient::fromJson()}.
+     *
+     * @return array{uri: string}
+     */
+    public function __serialize(): array
+    {
+        return ['uri' => $this->uri];
+    }
+
+    /**
+     * @param array{uri: string} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->uri = $data['uri'];
+        $this->loader = null;
+    }
 }

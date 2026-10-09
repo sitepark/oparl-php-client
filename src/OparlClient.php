@@ -134,9 +134,7 @@ final class OparlClient
      */
     public function get(string $url, string $class): OparlObject
     {
-        if (is_a($class, OparlList::class, true)) {
-            throw new InvalidArgumentException('Request lists with getList()');
-        }
+        self::assertObjectClass($class, 'Request lists with getList()');
         return $this->mapper->map($this->request($url), $class);
     }
 
@@ -173,6 +171,51 @@ final class OparlClient
         $type = $data['type'] ?? null;
         $class = OparlTypes::classOf(is_string($type) ? $type : null) ?? OparlObjectV1::class;
         return $this->mapper->map($data, $class);
+    }
+
+    /**
+     * Maps JSON to an object, exactly as a response of a server, e.g. to restore an object that
+     * was stored with `json_encode()`. References in the object are resolved through this client.
+     *
+     * @template T of OparlObject
+     * @param string $json a JSON object
+     * @param class-string<T> $class the class to map the object to, e.g. `OparlBody::class`
+     * @return T
+     * @throws OparlException if the JSON is empty or `null`
+     * @throws OparlParseException if the JSON is invalid or no JSON object
+     * @throws InvalidArgumentException if `$class` is `OparlList`, use {@see self::listFromJson()}
+     */
+    public function fromJson(string $json, string $class): OparlObject
+    {
+        self::assertObjectClass($class, 'Map list pages with listFromJson()');
+        return $this->mapper->map($this->decode(null, $json), $class);
+    }
+
+    /**
+     * Maps JSON to a list page, exactly as a response of a server, see {@see self::fromJson()}.
+     * Further pages are requested through this client.
+     *
+     * @template T of OparlObject
+     * @param string $json a JSON object
+     * @param class-string<T> $elementClass the class of the elements, e.g. `OparlMeeting::class`
+     * @return OparlList<T>
+     * @throws OparlException if the JSON is empty or `null`
+     * @throws OparlParseException if the JSON is invalid or no JSON object
+     */
+    public function listFromJson(string $json, string $elementClass): OparlList
+    {
+        return $this->mapper->mapList($this->decode(null, $json), $elementClass);
+    }
+
+    /**
+     * @param class-string<OparlObject> $class
+     * @throws InvalidArgumentException if the class can only be mapped as list page
+     */
+    private static function assertObjectClass(string $class, string $message): void
+    {
+        if (is_a($class, OparlList::class, true)) {
+            throw new InvalidArgumentException($message);
+        }
     }
 
     /**
@@ -230,16 +273,17 @@ final class OparlClient
     }
 
     /**
+     * @param string|null $url the URL of the response, `null` for JSON not read from a server
      * @return array<mixed>
      * @throws OparlException if the body is empty or `null`
      * @throws OparlParseException if the body is no JSON object
      */
-    private function decode(string $url, string $body): array
+    private function decode(?string $url, string $body): array
     {
         $trimmed = self::normalizeBody($body);
         if ($trimmed === '' || $trimmed === 'null') {
             // must not be mistaken for an object or the end of a list
-            throw new OparlException('Empty response from ' . $url, $url);
+            throw new OparlException($url !== null ? 'Empty response from ' . $url : 'Empty JSON', $url);
         }
         try {
             $data = self::decodeJson($trimmed);

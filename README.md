@@ -407,6 +407,23 @@ if it is `true`. Dates are written as `2024-01-21`, points in time as `2024-01-2
 references as URL. Additional properties are written as well, so objects read from a server are
 written back without loss.
 
+### Storing objects
+
+To store objects, e.g. in a database or cache, write them as JSON and restore them with the
+client; references in the restored objects are resolved through that client again:
+
+```php
+$json = json_encode($meeting);
+// ...
+$meeting = $client->fromJson($json, OparlMeeting::class);
+$page = $client->listFromJson($pageJson, OparlMeeting::class);
+```
+
+Objects can also be stored with `serialize()`, e.g. by a PSR-6 cache. References can not be
+resolved after `unserialize()` then, since they lose the connection to the client; their
+`getUri()` still works. List pages hold the logger of the client and are not meant to be
+serialized; store their elements, or the page as JSON.
+
 ## Security
 
 The client follows every URL a server returns: references and pagination links, and your http

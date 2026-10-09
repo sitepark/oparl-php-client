@@ -8,14 +8,18 @@ use SP\OparlClient\Internal\LogSafe;
 use Throwable;
 
 /**
- * Thrown when a response is no valid JSON or can not be mapped to the requested type.
+ * Thrown when a response, or JSON passed to {@see \SP\OparlClient\OparlClient::fromJson()}, is no
+ * valid JSON or no JSON object.
  */
 class OparlParseException extends OparlException
 {
-    public function __construct(string $uri, string $reason, ?Throwable $previous = null)
+    /**
+     * @param string|null $uri the URL of the response, `null` for JSON not read from a server
+     */
+    public function __construct(?string $uri, string $reason, ?Throwable $previous = null)
     {
         parent::__construct(
-            'Invalid response from ' . $uri . ': ' . LogSafe::of($reason),
+            ($uri !== null ? 'Invalid response from ' . $uri : 'Invalid JSON') . ': ' . LogSafe::of($reason),
             $uri,
             $previous,
         );
