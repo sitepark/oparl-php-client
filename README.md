@@ -31,6 +31,10 @@ update mechanism of the specification.
 composer require sitepark/oparl-client symfony/http-client nyholm/psr7
 ```
 
+Composer asks whether to allow the plugin of `php-http/discovery`, which finds the installed http
+client. The client works either way; with the plugin allowed, Composer also installs a
+PSR-18 client and PSR-17 factories automatically if none is installed yet.
+
 ## Quick start
 
 ```php
