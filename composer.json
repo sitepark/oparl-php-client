@@ -4,10 +4,13 @@
     "license": "MIT",
     "type": "library",
     "keywords": [
+        "api-client",
+        "civic-tech",
         "oparl",
-        "ratsinformationssystem",
-        "open data",
-        "psr-18"
+        "opendata",
+        "politics",
+        "psr-18",
+        "ratsinformationssystem"
     ],
     "authors": [
         {
