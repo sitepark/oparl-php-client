@@ -96,8 +96,9 @@ injection container.
 ### Timeouts, redirects and proxies
 
 Timeouts, redirects and proxies are configured in the PSR-18 client you pass to the
-`OparlClient`. Configure at least a timeout: without one, a server that does not answer blocks
-your application.
+`OparlClient`. Configure timeouts: by default, neither Symfony HttpClient nor Guzzle limits the
+total duration of a request, so a server that answers very slowly can hold up your application
+for a long time.
 
 **Symfony HttpClient** follows redirects by default:
 
