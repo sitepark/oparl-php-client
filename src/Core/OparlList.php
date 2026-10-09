@@ -170,15 +170,20 @@ final class OparlList extends OparlObject
      *
      * If a page can not be fetched, the iteration fails with the {@see OparlException} of that
      * page, e.g. an {@see OparlHttpException}; {@see OparlException::getUri()} is the URL of the
-     * page. Empty pages are skipped, and the iteration ends with a warning if a page links to a
-     * page that has already been visited.
+     * page. Empty pages are skipped, and the iteration ends with a warning if a `next` link
+     * points to a URL that has already been requested.
+     *
+     * Cycles are detected by the requested URLs only, not by the `self` links of the pages: a
+     * server sending the same `self` link on every page must not cut the list short. A page that
+     * a server links to under another URL is therefore requested once more before the cycle is
+     * detected; its elements are returned again, see `getId()` to remove duplicates.
      *
      * @return Generator<int, T, mixed, void>
      */
     public function all(): Generator
     {
         $page = $this;
-        $visited = array_fill_keys($this->pageUris(), true);
+        $requested = array_fill_keys($this->sourceUris, true);
         while (true) {
             // not "yield from", which would repeat the keys 0, 1, ... on every page
             foreach ($page->data as $element) {
@@ -189,42 +194,17 @@ final class OparlList extends OparlObject
                 return;
             }
             $nextUri = $next->getUri();
-            if (isset($visited[$nextUri])) {
+            if (isset($requested[$nextUri])) {
                 $this->logger->warning(
-                    'Stopping pagination, page {uri} has already been visited',
+                    'Stopping pagination, page {uri} has already been requested',
                     ['uri' => $nextUri],
                 );
                 return;
             }
+            $requested[$nextUri] = true;
             // a failed page is reported with its own exception, e.g. an OparlHttpException
             $page = $next->get();
-            // the requested URL was new, but the page may name itself as a page already visited
-            $pageUris = array_diff($page->pageUris(), [$nextUri]);
-            if (array_intersect_key($visited, array_flip($pageUris)) !== []) {
-                $this->logger->warning(
-                    'Stopping pagination, page {uri} leads to a page that has already been visited',
-                    ['uri' => $nextUri],
-                );
-                return;
-            }
-            $visited[$nextUri] = true;
-            $visited += array_fill_keys($pageUris, true);
         }
-    }
-
-    /**
-     * All known URLs of this page: the URLs it was loaded from and its `self` link.
-     *
-     * @return list<string>
-     */
-    private function pageUris(): array
-    {
-        $uris = $this->sourceUris;
-        $self = $this->links->getSelf();
-        if ($self !== null) {
-            $uris[] = $self->getUri();
-        }
-        return $uris;
     }
 
     protected function mappedProperties(): array

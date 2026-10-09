@@ -72,16 +72,17 @@ final class OparlListTest extends TestCase
         $this->assertSame(['a'], $this->namesFrom('/p1'));
     }
 
-    public function testStopsAtPageThatWasAlreadyVisited(): void
+    public function testStopsAtPageThatWasAlreadyRequested(): void
     {
         $this->server->page('/p1', '/p1', '/p2', 'a');
         $this->server->page('/p2', '/p2', '/p1', 'b');
 
         $this->assertSame(['a', 'b'], $this->namesFrom('/p1'));
         $this->assertSame(
-            ['Stopping pagination, page https://oparl.example.org/p1 has already been visited'],
+            ['Stopping pagination, page https://oparl.example.org/p1 has already been requested'],
             $this->logger->messages('warning'),
         );
+        $this->assertSame(1, $this->server->requestCount('/p1'));
     }
 
     public function testStopsOnCycleWithoutSelfLinks(): void
@@ -93,18 +94,41 @@ final class OparlListTest extends TestCase
         $this->assertSame(1, $this->server->requestCount('/p1'));
     }
 
-    public function testStopsAtPageNamingItselfAsVisitedPage(): void
+    public function testDoesNotStopAtSameSelfLinkOnEveryPage(): void
+    {
+        // a server whose self link always names the list instead of the page
+        $this->server->page('/p1', '/papers', '/p2', 'a');
+        $this->server->page('/p2', '/papers', '/p3', 'b');
+        $this->server->page('/p3', '/papers', null, 'c');
+
+        $this->assertSame(['a', 'b', 'c'], $this->namesFrom('/p1'));
+        $this->assertSame([], $this->logger->records);
+    }
+
+    public function testRequestsPageLinkedUnderOtherUrlOnceMore(): void
     {
         // e.g. an old URL that the server answers with the content of the first page
         $this->server->page('/p1', '/p1', '/p2', 'a');
         $this->server->page('/p2', '/p2', '/old/p1', 'b');
         $this->server->page('/old/p1', '/p1', '/p2', 'a');
 
-        $this->assertSame(['a', 'b'], $this->namesFrom('/p1'));
+        $this->assertSame(['a', 'b', 'a'], $this->namesFrom('/p1'));
         $this->assertSame(
-            ['Stopping pagination, page https://oparl.example.org/old/p1 leads to a page that has already been visited'],
+            ['Stopping pagination, page https://oparl.example.org/p2 has already been requested'],
             $this->logger->messages('warning'),
         );
+    }
+
+    public function testDetectsCycleOfPageReadWithoutUrl(): void
+    {
+        $page = (new ObjectMapper(listLoader: fn(string $url, string $class): OparlList => $this->server->load($url, $class)))
+            ->mapList(['data' => [['name' => 'a']], 'links' => ['next' => PageServer::BASE . '/p2']], TestObject::class);
+        $this->server->page('/p2', null, '/p1', 'b');
+        $this->server->page('/p1', null, '/p2', 'a');
+
+        $names = array_map(static fn(TestObject $o): ?string => $o->name, iterator_to_array($page->all(), false));
+
+        $this->assertSame(['a', 'b', 'a'], $names, 'the first page is requested once more, its URL is unknown');
     }
 
     public function testFailsWithExceptionOfPageThatCanNotBeFetched(): void

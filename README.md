@@ -222,7 +222,9 @@ called on, and every call starts there again.
 If a page can not be fetched, `all()` fails with the exception of that page, e.g. an
 `OparlHttpException` whose `getUri()` is the URL of the page, so a partial result is never
 mistaken for the complete list. Empty pages are skipped, and iteration stops with a warning if a
-server links back to a page that has already been visited.
+`next` link points to a URL that has already been requested. Cycles are detected by these URLs
+only, not by the `self` links of the pages, so a server that sends the same `self` link on every
+page does not cut the list short.
 
 #### Duplicates
 
