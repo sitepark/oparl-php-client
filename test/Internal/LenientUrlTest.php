@@ -77,6 +77,7 @@ final class LenientUrlTest extends TestCase
         yield 'space' => ['https://oparl.example.org/a b'];
         yield 'invalid escape' => ['https://oparl.example.org/%zz'];
         yield 'invalid scheme' => ['1http://oparl.example.org/'];
+        yield 'invalid character in scheme' => ['ht!tp://oparl.example.org/'];
         yield 'unclosed bracket' => ['http://[oparl.example.org'];
         yield 'bracket in user info' => ['http://u[@oparl.example.org/'];
         yield 'bracket in path' => ['https://oparl.example.org/[1]'];

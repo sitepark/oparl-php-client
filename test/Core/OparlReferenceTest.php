@@ -42,7 +42,10 @@ final class OparlReferenceTest extends TestCase
         $reference = new OparlReference('https://oparl.example.org/meeting/1');
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('https://oparl.example.org/meeting/1');
+        $this->expectExceptionMessage(
+            'No loader set for the reference to https://oparl.example.org/meeting/1,'
+            . ' references are resolved through the OparlClient that read them',
+        );
         $reference->get();
     }
 

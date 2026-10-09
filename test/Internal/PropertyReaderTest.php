@@ -145,10 +145,13 @@ final class PropertyReaderTest extends TestCase
     {
         yield 'number as string' => ['name', '{"name": 42}', '42'];
         yield 'boolean as string' => ['name', '{"name": false}', 'false'];
+        yield 'fraction as string' => ['name', '{"name": 1.5}', '1.5'];
         yield 'integral float as integer' => ['count', '{"count": 3.0}', 3];
         yield 'numeric string as integer' => ['count', '{"count": "-3"}', -3];
         yield 'string as boolean' => ['active', '{"active": "false"}', false];
         yield 'number as boolean' => ['active', '{"active": 1}', true];
+        yield 'string true as boolean' => ['active', '{"active": "true"}', true];
+        yield 'zero as boolean' => ['active', '{"active": 0}', false];
         yield 'embedded object as reference' => ['ref', '{"ref": {"id": "https://oparl.example.org/r", "name": "x"}}', 'https://oparl.example.org/r'];
         yield 'repaired URL' => ['url', '{"url": "https://oparl.example.org/a b"}', 'https://oparl.example.org/a%20b'];
         yield 'empty object as embedded object' => ['geo', '{"geo": {}}', []];

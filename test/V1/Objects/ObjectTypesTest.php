@@ -81,6 +81,23 @@ final class ObjectTypesTest extends TestCase
         $this->assertSame('{}', json_encode($object));
     }
 
+    #[DataProviderExternal(Schema::class, 'types')]
+    public function testIsNotDeletedIfCreatedWithoutArguments(string $type): void
+    {
+        $class = self::classOf($type);
+
+        $this->assertFalse((new $class())->isDeleted());
+    }
+
+    public function testReadsDeletedOfObjectOfUnknownType(): void
+    {
+        $object = Json::map('{"type":"https://example.org/Hersteller/Kasse","deleted":true}', OparlObjectV1::class);
+
+        $this->assertTrue($object->isDeleted());
+        $this->assertFalse((new OparlObjectV1())->isDeleted());
+        $this->assertFalse(Json::map('{}', OparlObjectV1::class)->isDeleted());
+    }
+
     public function testWritesDeletedOnlyIfTrue(): void
     {
         $this->assertSame(

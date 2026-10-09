@@ -13,7 +13,7 @@ final class PercentEncoderTest extends TestCase
 {
     public function testKeepsLettersDigitsAndGivenCharacters(): void
     {
-        $this->assertSame('aZ09-_', PercentEncoder::encode('aZ09-_', '-_'));
+        $this->assertSame('azAZ09-_', PercentEncoder::encode('azAZ09-_', '-_'));
     }
 
     public function testEncodesOtherCharactersAsUtf8(): void

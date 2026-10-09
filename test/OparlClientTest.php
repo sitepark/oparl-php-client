@@ -11,6 +11,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -123,6 +124,8 @@ final class OparlClientTest extends TestCase
     public function testRejectsInvalidUserAgent(string $userAgent): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('userAgent must not be blank or contain control characters: "'
+            . str_replace(["\r", "\n"], '?', $userAgent) . '"');
         new OparlClient($this->http, new Psr17Factory(), $userAgent);
     }
 
@@ -305,6 +308,7 @@ final class OparlClientTest extends TestCase
         yield 'json list' => [500, '["error"]', 'application/json'];
         yield 'empty' => [502, '', 'text/plain'];
         yield 'redirect' => [301, '', 'text/html'];
+        yield 'multiple choices' => [300, '', 'text/html'];
     }
 
     #[DataProvider('errorResponsesWithoutErrorObject')]
@@ -349,7 +353,7 @@ final class OparlClientTest extends TestCase
 
     public function testIgnoresByteOrderMark(): void
     {
-        $this->http->respond('/body/1', 200, "\xEF\xBB\xBF" . '{"name":"Stadt"}');
+        $this->http->respond('/body/1', 200, "\xEF\xBB\xBF \n" . '{"name":"Stadt"}');
 
         $this->assertSame('Stadt', $this->client->get(self::BASE . '/body/1', OparlBody::class)->getName());
     }
@@ -472,6 +476,27 @@ final class OparlClientTest extends TestCase
         $this->assertSame(OparlException::class, $e::class);
         $this->assertSame(self::BASE . '/body/1', $e->getUri());
         $this->assertSame($failure, $e->getPrevious());
+        $this->assertSame('Request to https://oparl.example.org/body/1 failed: client closed', $e->getMessage());
+    }
+
+    public function testReportsClientExceptionThatIsNoRuntimeExceptionAsConnectionException(): void
+    {
+        $failure = new class ('TLS handshake failed') extends \Exception implements ClientExceptionInterface {};
+        $this->http->fail('/body/1', $failure);
+
+        $e = $this->expectFailure($this->getBody('/body/1'));
+
+        $this->assertInstanceOf(OparlConnectionException::class, $e);
+        $this->assertSame($failure, $e->getPrevious());
+    }
+
+    public function testAcceptsSchemeInUpperCase(): void
+    {
+        $this->http->respond('/body/1', 200, '{"name":"Stadt"}');
+
+        $body = $this->client->get('HTTPS://oparl.example.org/body/1', OparlBody::class);
+
+        $this->assertSame('Stadt', $body->getName());
     }
 
     /**

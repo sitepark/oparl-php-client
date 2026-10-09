@@ -270,12 +270,21 @@ final class OparlListTest extends TestCase
         $this->server->json('/p1', [
             'data' => [['name' => 'a']],
             'pagination' => ['totalElements' => 2],
-            'links' => ['next' => PageServer::BASE . '/p2', 'web' => 'https://ris.example.org/gremien'],
+            'links' => [
+                'first' => PageServer::BASE . '/p0',
+                'prev' => PageServer::BASE . '/p0',
+                'self' => PageServer::BASE . '/p1',
+                'next' => PageServer::BASE . '/p2',
+                'last' => PageServer::BASE . '/p2',
+                'web' => 'https://ris.example.org/gremien',
+            ],
         ]);
 
         $this->assertSame(
             '{"data":[{"name":"a"}],"pagination":{"totalElements":2},'
-            . '"links":{"next":"https://oparl.example.org/p2","web":"https://ris.example.org/gremien"}}',
+            . '"links":{"first":"https://oparl.example.org/p0","prev":"https://oparl.example.org/p0",'
+            . '"self":"https://oparl.example.org/p1","next":"https://oparl.example.org/p2",'
+            . '"last":"https://oparl.example.org/p2","web":"https://ris.example.org/gremien"}}',
             json_encode($this->server->get('/p1'), JSON_UNESCAPED_SLASHES),
         );
     }

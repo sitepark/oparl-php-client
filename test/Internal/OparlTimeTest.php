@@ -30,6 +30,10 @@ final class OparlTimeTest extends TestCase
         yield 'without seconds' => ['2024-01-21T10:00+05:30', '2024-01-21T10:00:00.000000+05:30'];
         yield 'offset without colon' => ['2024-01-21T10:00:00-0230', '2024-01-21T10:00:00.000000-02:30'];
         yield 'offset hours only' => ['2024-01-21T10:00:00+01', '2024-01-21T10:00:00.000000+01:00'];
+        yield 'last second of a day' => ['2024-12-31T23:59:59+01:00', '2024-12-31T23:59:59.000000+01:00'];
+        yield 'largest offset' => ['2024-01-21T10:00:00+18:00', '2024-01-21T10:00:00.000000+18:00'];
+        yield 'smallest offset' => ['2024-01-21T10:00:00-18:00', '2024-01-21T10:00:00.000000-18:00'];
+        yield 'offset with minutes' => ['2024-01-21T10:00:00+05:45', '2024-01-21T10:00:00.000000+05:45'];
         yield 'whitespace and lower case' => [" 2024-01-21t10:00:00z\n", '2024-01-21T10:00:00.000000+00:00'];
     }
 
@@ -50,6 +54,9 @@ final class OparlTimeTest extends TestCase
         yield 'february 30' => ['2024-02-30'];
         yield 'hour 24' => ['2024-01-21T24:00:00Z'];
         yield 'offset out of range' => ['2024-01-21T10:00:00+19:00'];
+        yield 'offset just out of range' => ['2024-01-21T10:00:00+18:01'];
+        yield 'minute 60' => ['2024-01-21T10:60:00Z'];
+        yield 'second 60' => ['2024-01-21T10:00:60Z'];
         yield 'offset minutes out of range' => ['2024-01-21T10:00:00+01:60'];
         yield 'empty' => [''];
         yield 'trailing text' => ['2024-01-21T10:00:00Z abc'];
