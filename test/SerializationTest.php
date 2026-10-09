@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SP\OparlClient\Core\OparlException;
 use SP\OparlClient\Core\OparlList;
+use SP\OparlClient\Core\OparlListLinks;
 use SP\OparlClient\Core\OparlParseException;
 use SP\OparlClient\Core\OparlReference;
 use SP\OparlClient\OparlClient;
@@ -86,6 +87,12 @@ final class SerializationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('listFromJson()');
         $this->client->fromJson('{}', OparlList::class);
+    }
+
+    public function testRejectsLinksClassForSingleObject(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->client->fromJson('{}', OparlListLinks::class);
     }
 
     public function testFailsForInvalidJson(): void

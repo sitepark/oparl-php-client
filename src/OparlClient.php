@@ -22,6 +22,7 @@ use SP\OparlClient\Core\OparlError;
 use SP\OparlClient\Core\OparlException;
 use SP\OparlClient\Core\OparlHttpException;
 use SP\OparlClient\Core\OparlList;
+use SP\OparlClient\Core\OparlListLinks;
 use SP\OparlClient\Core\OparlObject;
 use SP\OparlClient\Core\OparlParseException;
 use SP\OparlClient\Internal\LenientUrl;
@@ -130,7 +131,8 @@ final class OparlClient
      * @return T
      * @throws OparlException if the request fails, e.g. an {@see OparlHttpException} if the server
      *     answers with an error
-     * @throws InvalidArgumentException if `$class` is `OparlList`, use {@see self::getList()}
+     * @throws InvalidArgumentException if `$class` is `OparlList`, use {@see self::getList()}, or
+     *     `OparlListLinks`
      */
     public function get(string $url, string $class): OparlObject
     {
@@ -183,7 +185,8 @@ final class OparlClient
      * @return T
      * @throws OparlException if the JSON is empty or `null`
      * @throws OparlParseException if the JSON is invalid or no JSON object
-     * @throws InvalidArgumentException if `$class` is `OparlList`, use {@see self::listFromJson()}
+     * @throws InvalidArgumentException if `$class` is `OparlList`, use {@see self::listFromJson()},
+     *     or `OparlListLinks`
      */
     public function fromJson(string $json, string $class): OparlObject
     {
@@ -209,12 +212,15 @@ final class OparlClient
 
     /**
      * @param class-string<OparlObject> $class
-     * @throws InvalidArgumentException if the class can only be mapped as list page
+     * @throws InvalidArgumentException if the class can only be mapped as or as part of a list page
      */
-    private static function assertObjectClass(string $class, string $message): void
+    private static function assertObjectClass(string $class, string $listMessage): void
     {
         if (is_a($class, OparlList::class, true)) {
-            throw new InvalidArgumentException($message);
+            throw new InvalidArgumentException($listMessage);
+        }
+        if (is_a($class, OparlListLinks::class, true)) {
+            throw new InvalidArgumentException('The links of a list page are only read as part of the page');
         }
     }
 

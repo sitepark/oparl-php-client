@@ -20,6 +20,7 @@ use SP\OparlClient\Core\OparlError;
 use SP\OparlClient\Core\OparlException;
 use SP\OparlClient\Core\OparlHttpException;
 use SP\OparlClient\Core\OparlList;
+use SP\OparlClient\Core\OparlListLinks;
 use SP\OparlClient\Core\OparlParseException;
 use SP\OparlClient\OparlClient;
 use SP\OparlClient\Test\Fixture\MockClientStrategy;
@@ -200,7 +201,15 @@ final class OparlClientTest extends TestCase
     public function testRejectsListClassForSingleObjects(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Request lists with getList()');
         $this->client->get(self::BASE . '/bodies', OparlList::class);
+    }
+
+    public function testRejectsLinksClassForSingleObjects(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The links of a list page are only read as part of the page');
+        $this->client->get(self::BASE . '/bodies', OparlListLinks::class);
     }
 
     public function testResolvesAnyObjectByType(): void
