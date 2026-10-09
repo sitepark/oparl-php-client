@@ -67,6 +67,25 @@ final class OparlReferenceTest extends TestCase
         );
     }
 
+    public function testShowsOnlyUrlInDebugOutput(): void
+    {
+        $client = new \stdClass();
+        $reference = new OparlReference(
+            'https://oparl.example.org/meeting/1',
+            static fn(string $uri): \stdClass => $client,
+        );
+
+        $this->assertSame(
+            ['uri' => 'https://oparl.example.org/meeting/1', 'resolvable' => true],
+            $reference->__debugInfo(),
+        );
+        $this->assertStringNotContainsString('Closure', print_r($reference, true));
+        $this->assertSame(
+            ['uri' => 'https://oparl.example.org/meeting/1', 'resolvable' => false],
+            (new OparlReference('https://oparl.example.org/meeting/1'))->__debugInfo(),
+        );
+    }
+
     public function testEncodesPlusOfTimezoneOffset(): void
     {
         $this->assertSame(

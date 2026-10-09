@@ -112,6 +112,17 @@ final class OparlReference implements JsonSerializable
     }
 
     /**
+     * Shows the URL only in `var_dump()` and `print_r()`, not the loader, which refers to the
+     * whole client.
+     *
+     * @return array{uri: string, resolvable: bool}
+     */
+    public function __debugInfo(): array
+    {
+        return ['uri' => $this->uri, 'resolvable' => $this->loader !== null];
+    }
+
+    /**
      * Serializes the URL only: the loader can not be serialized. After `unserialize()`, the
      * reference has no loader and {@see self::get()} fails, unless the object is read again, e.g.
      * with {@see \SP\OparlClient\OparlClient::fromJson()}.
