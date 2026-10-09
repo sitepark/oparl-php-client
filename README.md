@@ -321,7 +321,8 @@ $original = $person->getAdditionalProperty('membership'); // e.g. ["https://…/
 A single value where a list is required, e.g. `"email": "info@example.org"`, is read as a list
 with that value. A reference may also be sent as embedded object; its `id` is used then. URLs
 with characters that are not allowed, e.g. spaces, are percent-encoded; valid URLs are kept
-exactly as sent.
+exactly as sent. Responses are read as UTF-8: a byte order mark is ignored, and bytes that are
+no valid UTF-8, e.g. of a server sending Latin-1, are replaced with `U+FFFD` (`�`).
 
 ### Error handling
 

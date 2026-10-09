@@ -338,6 +338,38 @@ final class OparlClientTest extends TestCase
         }
     }
 
+    public function testIgnoresByteOrderMark(): void
+    {
+        $this->http->respond('/body/1', 200, "\xEF\xBB\xBF" . '{"name":"Stadt"}');
+
+        $this->assertSame('Stadt', $this->client->get(self::BASE . '/body/1', OparlBody::class)->getName());
+    }
+
+    public function testReplacesInvalidUtf8InsteadOfFailing(): void
+    {
+        // e.g. a server sending Latin-1
+        $this->http->respond('/body/1', 200, '{"name":"K' . "\xF6" . 'ln","shortName":"K"}');
+
+        $body = $this->client->get(self::BASE . '/body/1', OparlBody::class);
+
+        $this->assertSame("K\u{FFFD}ln", $body->getName());
+        $this->assertSame('K', $body->getShortName());
+    }
+
+    public function testReadsErrorObjectWithByteOrderMarkAndInvalidUtf8(): void
+    {
+        $this->http->respond(
+            '/body/404',
+            404,
+            "\xEF\xBB\xBF" . '{"type":"https://schema.oparl.org/1.1/Error","message":"nicht gef' . "\xFC" . 'nden"}',
+        );
+
+        $e = $this->expectFailure($this->getBody('/body/404'));
+
+        $this->assertInstanceOf(OparlHttpException::class, $e);
+        $this->assertSame("nicht gef\u{FFFD}nden", $e->getError()?->getMessage());
+    }
+
     public function testIterationFailsForNullPage(): void
     {
         $this->http->respond('/p1', 200, '{"data":[{"name":"a"}],"links":{"next":"https://oparl.example.org/null"}}');

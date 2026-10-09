@@ -236,13 +236,13 @@ final class OparlClient
      */
     private function decode(string $url, string $body): array
     {
-        $trimmed = trim($body);
+        $trimmed = self::normalizeBody($body);
         if ($trimmed === '' || $trimmed === 'null') {
             // must not be mistaken for an object or the end of a list
             throw new OparlException('Empty response from ' . $url, $url);
         }
         try {
-            $data = json_decode($trimmed, true, 512, JSON_THROW_ON_ERROR);
+            $data = self::decodeJson($trimmed);
         } catch (JsonException $e) {
             throw new OparlParseException($url, $e->getMessage(), $e);
         }
@@ -258,7 +258,7 @@ final class OparlClient
     private function parseError(string $body): ?OparlError
     {
         try {
-            $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+            $data = self::decodeJson(self::normalizeBody($body));
         } catch (JsonException) {
             return null;
         }
@@ -266,5 +266,25 @@ final class OparlClient
             return null;
         }
         return $this->mapper->map($data, OparlError::class);
+    }
+
+    /**
+     * Removes surrounding whitespace and a UTF-8 byte order mark, which some servers send.
+     */
+    private static function normalizeBody(string $body): string
+    {
+        $trimmed = trim($body);
+        return str_starts_with($trimmed, "\xEF\xBB\xBF") ? trim(substr($trimmed, 3)) : $trimmed;
+    }
+
+    /**
+     * Decodes JSON. Bytes that are no valid UTF-8, e.g. of a server sending Latin-1, are replaced
+     * with U+FFFD instead of failing the whole response.
+     *
+     * @throws JsonException if the JSON is invalid
+     */
+    private static function decodeJson(string $json): mixed
+    {
+        return json_decode($json, true, 512, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE);
     }
 }
