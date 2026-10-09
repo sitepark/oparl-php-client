@@ -215,8 +215,8 @@ foreach ($page->all() as $body) {
 ```
 
 `all()` is a generator: the next page is only requested when the elements of the previous page
-have been consumed, so leaving the loop early saves requests. Every call of `all()` starts again
-with the first page.
+have been consumed, so leaving the loop early saves requests. `all()` starts with the page it is
+called on, and every call starts there again.
 
 If a page can not be fetched, `all()` fails with the exception of that page, e.g. an
 `OparlHttpException` whose `getUri()` is the URL of the page, so a partial result is never
