@@ -1,0 +1,15 @@
+# keep the installed package small: only the sources, README, LICENSE and composer.json
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.phive export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.phplint.yml export-ignore
+/docs export-ignore
+/infection.json export-ignore
+/phpcs.compatibilitycheck.xml export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit.xml export-ignore
+/test export-ignore
+/var export-ignore
