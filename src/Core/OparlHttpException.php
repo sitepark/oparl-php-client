@@ -18,8 +18,9 @@ class OparlHttpException extends OparlException
         private readonly ?OparlError $error = null,
     ) {
         $message = 'HTTP ' . $statusCode . ' for ' . $uri;
-        if ($error?->getMessage() !== null) {
-            $message .= ': ' . LogSafe::of($error->getMessage());
+        $serverMessage = $error?->getMessage();
+        if ($serverMessage !== null) {
+            $message .= ': ' . LogSafe::of($serverMessage);
         }
         parent::__construct($message, $uri);
     }

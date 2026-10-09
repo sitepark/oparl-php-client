@@ -98,7 +98,7 @@ final class OparlTime
      * Splits the value into its parts and checks their ranges. A space instead of `T` between date
      * and time and surrounding whitespace are accepted.
      *
-     * @return array{int, int, int, int, int, int, int, ?string}|null year, month, day, hour,
+     * @return array{int, int, int, int, int, int, int, ?non-empty-string}|null year, month, day, hour,
      *     minute, second, microsecond and offset (`null` if none was sent)
      */
     private static function parse(string $value): ?array
@@ -133,7 +133,7 @@ final class OparlTime
     /**
      * Normalizes the offset to `+hh:mm`, as accepted by {@see DateTimeZone}.
      *
-     * @return string|null the offset, or `null` if it is out of the range of ±18:00
+     * @return non-empty-string|null the offset, or `null` if it is out of the range of ±18:00
      */
     private static function offset(string $offset): ?string
     {
@@ -146,6 +146,6 @@ final class OparlTime
         if ($minutes > 59 || $hours * 60 + $minutes > 18 * 60) {
             return null;
         }
-        return sprintf('%s%02d:%02d', $digits[0], $hours, $minutes);
+        return ($digits[0] === '-' ? '-' : '+') . sprintf('%02d:%02d', $hours, $minutes);
     }
 }
