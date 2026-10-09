@@ -10,6 +10,9 @@ English | [Deutsch](README.de.md)
 
 # OParl PHP Client
 
+> **Note:** This project was developed with extensive use of AI. Contributions created with the
+> help of AI are accepted.
+
 A PHP client for [OParl](https://oparl.org) 1.0 and 1.1, the standard interface of German council
 information systems (Ratsinformationssysteme). It maps all OParl object types to PHP classes,
 resolves references between them, iterates over paginated lists and supports the incremental

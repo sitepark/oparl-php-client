@@ -10,6 +10,9 @@
 
 # OParl PHP Client
 
+> **Hinweis:** Dieses Projekt wurde mit sehr viel KI-Unterstützung entwickelt. Beiträge, die mit
+> Hilfe von KI entstanden sind, werden ebenfalls angenommen.
+
 Ein PHP-Client für [OParl](https://oparl.org) 1.0 und 1.1, die Standardschnittstelle deutscher
 Ratsinformationssysteme. Er bildet alle OParl-Objekttypen auf PHP-Klassen ab, löst Referenzen
 zwischen ihnen auf, blättert durch seitenweise ausgelieferte Listen und unterstützt den
