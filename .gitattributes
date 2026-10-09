@@ -1,6 +1,7 @@
 # keep the installed package small: only the sources, README, LICENSE and composer.json
 /.editorconfig export-ignore
 /.gitattributes export-ignore
+/.githooks export-ignore
 /.github export-ignore
 /.gitignore export-ignore
 /.phive export-ignore

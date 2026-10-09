@@ -461,6 +461,13 @@ composer test      # PHPUnit with coverage
 composer fix       # format the code
 ```
 
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/). To check them
+locally, enable the hook:
+
+```sh
+git config core.hooksPath .githooks
+```
+
 `SchemaCoverageTest` and `SchemaValuesTest` check the object classes against the OParl 1.1 schema
 in `test/resources/schema/1.1`: every property must have a getter of a matching type, and every
 value must arrive at its getter and be written back unchanged.
