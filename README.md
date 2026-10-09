@@ -5,6 +5,8 @@
 ![php](https://img.shields.io/badge/PHP-8.4-blue)
 ![php](https://img.shields.io/badge/PHP-8.5-blue)
 
+English | [Deutsch](README.de.md)
+
 # OParl PHP Client
 
 A PHP client for [OParl](https://oparl.org) 1.0 and 1.1, the standard interface of German council
